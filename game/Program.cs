@@ -101,15 +101,20 @@ namespace game
                 if(whowon > 0)
                 {
                     player1score = player1.Score(whowon);
-                    Console.WriteLine(player1score);
-                }else if(whowon < 0)
-                {
-                    player2score = player2.Score(Math.Abs(whowon));
-                    Console.WriteLine(player2score);
+                    Console.WriteLine("Player 1 wins");
                 }
-
+                else if(whowon < 0)
+                {   
+                    //player2score = player2.Score(Math.Abs(whowon));
+                    player2score = player2.Score(whowon);
+                    Console.WriteLine("Player 2 wins");
+                }
+                    Console.WriteLine("player1: " + player1._score );
+                    Console.WriteLine("player2: " + player2._score );
                 //Playerwins outputs the winner to console (of the round) and also takes both choices from storage as arguments  
-                Console.WriteLine(phrase.Playerwins(whowon, player1.Choice, player2.Choice, player1.Username, player2.Username, player1score, player2score, round + 1));
+                Console.WriteLine(phrase.Playerwins(whowon, player1.Choice, player2.Choice, player1.Username, player2.Username, player1score, player2._score, round + 1));
+        //public string Playerwins(int whowon, string player1choice, string player2choice, string player1name, string player2name, int player1score, int player2score, int round)
+
 
                 //creates a new Results refernce variable "finalscore"
                 //Results finalscore = new Results();
@@ -117,17 +122,17 @@ namespace game
                 //adds the current score to the total score  
                 //Console.WriteLine(finalscore.TotalPlayerScore(whowon));
                 round++;
-
-                //yeah I ran out of time here
-                if(player1score>player2score)
-                {
-                    Console.WriteLine("Player 1 is the grand champion!");
-                }else
-                {
-                    Console.WriteLine("Player 2 is the grand champion!");
-                }
-                Console.WriteLine("If you want to play again just do whatever you did the first time to run the program ya bum...");
             }
+        
+            //yeah I ran out of time here
+            if(player1score>player2score)
+            {
+                Console.WriteLine("Player 1 is the grand champion!");
+            }else
+            {
+                Console.WriteLine("Player 2 is the grand champion!");
+            }
+            Console.WriteLine("If you want to play again just do whatever you did the first time to run the program ya bum...");
         }
     }
 }

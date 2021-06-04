@@ -118,9 +118,12 @@ namespace game
         }
                 //stores the input "score" to the local variable "_score"
                 //adds to previous inputs of score
-                private int _score;
+                public int _score{get; set;}
                 public int Score(int score){
-                    return _score += score;
+                    //System.Console.WriteLine(_score);
+                    _score++;
+                    return _score;
+                    
         }
     }
 }

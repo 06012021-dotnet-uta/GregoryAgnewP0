@@ -62,15 +62,15 @@ namespace game
         } 
 
         //it's gonna be a hardcode life
-        private string _invalidChoice = "\nThat was not a valid option.\n";
+        //public string _invalidChoice = "\nThat was not a valid option.\n";
 
         //C# syntax for automatically returning the variable "_invalidChoice" when the method "InvalidChoice" is called
-        public string InvalidChoice
-        { 
-            get{
-                return _invalidChoice;
-            }
-        } 
+        public string InvalidChoice{get;} =  "\nThat was not a valid option.\n";
+        // { 
+        //     get{
+        //         return _invalidChoice;
+        //     }
+        // } 
 
         //declares field _playerwins of type string (and doesn't hardcode it yay!)
         private string _playerwins;
