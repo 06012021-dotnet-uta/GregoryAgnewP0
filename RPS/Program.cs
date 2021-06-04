@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RockPaperScissors1
+namespace RPS
 {
     class Program
     {
@@ -12,6 +12,10 @@ namespace RockPaperScissors1
         }
         //Runs the console
         static void Main(string[] args){
+            //new testing stuff
+            //Person person = new Person();
+
+
             //initializes
             Console.WriteLine("Would you like to play a game?\n\nWhat is your name?");
             String yourname = Console.ReadLine();
