@@ -9,7 +9,8 @@ namespace RPS
             private System.Random _aiChoice = new System.Random();
 
             // Built a very short list with valid choices in it.
-           private System.Collections.Generic.List<string> _aiChoices = new System.Collections.Generic.List<string>{
+            private System.Collections.Generic.List<string> _aiChoices = new System.Collections.Generic.List<string>
+            {
             "ROCK",
             "PAPER",
             "SCISSORS"
@@ -22,13 +23,13 @@ namespace RPS
                     /* .Next property of Random class makes a random int32 with inclusive lower and exclusive upper bound
                         set here to incompass all the options in _aiChoices when referencing by index
                         returns the randomly selected choice from the list
-                        Return _aiChoices[1] can be used to debug logic issues easier.;*/
+                        Return _aiChoices[1] can be used to debug logic issues easier.; */
                     return _aiChoices[_aiChoice.Next(0,_aiChoices.Count)];
 
                 }
             }
 
             // Setters and getters with default value for the computer's name.
-            public string AIName{get; set;} = "the computer";
+            public string AIName{ get; set; } = "the computer";
     }
 }
