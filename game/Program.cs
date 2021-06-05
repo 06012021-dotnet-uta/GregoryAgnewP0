@@ -18,6 +18,7 @@ namespace game
 
             //creates a new reference variable "player1" from the class "storeinfo" of type "storeinfo" from another class file
             storeinfo player1 = new storeinfo();
+            storeinfo player2 = new storeinfo();
 
             /*uses a custom method "Storename" from the reference variable "player1" 
             that has the method because it is part of the "storeinfo" class to set some value
@@ -79,7 +80,7 @@ namespace game
                 //creates a new reference variable "player2" from the class "storeinfo" of type "storeinfo" from another class file
                 //I'm tired and don't feel like handling the stupid for input on asking if it's a player or cpu so we are doing cpu for now
                 //besides, surely there is a better way to do this than doubling the length of my code right?
-                storeinfo player2 = new storeinfo();
+                //storeinfo player2 = new storeinfo();
 
                 //creates an AI reference variable
                 AI cpu = new AI();
@@ -101,6 +102,7 @@ namespace game
                 if(whowon > 0)
                 {
                     player1score = player1.Score(whowon);
+                    player2score = player2.Score(whowon);
                     Console.WriteLine("Player 1 wins");
                 }
                 else if(whowon < 0)
