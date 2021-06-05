@@ -81,7 +81,7 @@ namespace RPS
                 }
 
                 // Prints to console the total of the rounds and who won or if there was a tie.
-                Console.WriteLine(rules.Winner(player1.Playerwins, player2.Playerwins, player1.Name, player2.Name));
+                Console.WriteLine(rules.Winner(player1.Playerwins, player2.Playerwins, player1.Name, player2.AIName));
 
                 Console.WriteLine(rules.Again);   
 
@@ -94,6 +94,8 @@ namespace RPS
                         again = true;
                         what = true;
                         round = 0;
+                        player1.Playerwins = 0;
+                    player2.Playerwins = 0;
                     }else if(input == "NO"){
                         again = false;
                         what = true;
@@ -102,7 +104,7 @@ namespace RPS
                         Console.WriteLine("Enter yes or no please.");
                         what = false;
                     }
-                
+
                 }while(what == false);
                 
             }while(again == true);
