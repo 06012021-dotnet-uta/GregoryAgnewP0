@@ -1,62 +1,72 @@
 using System.Collections.Generic;
 using P0BusisnessLogic;
+using P0AccessDatabase;
 
 namespace P0
 {
-    // Used in main program and Menue to print out the contents of a list to Console.
-    public class Listoutput
+    /// <summary>
+    /// Contains methods to itterate over a list and returns a string.
+    /// </summary>
+    public class Listoutput : IListoutput
     {
-        // Takes in a list and returns nothing.
+        /// <summary>
+        /// Iterrates on a list and returns all elements in one string.
+        /// </summary>
+        /// <param name="category">Takes a list of strings to itterate on.</param>
+        /// <returns>Returns a string with all elements from list.</returns>
         public string Listout(List<string> category)
         {
             string concstring = "\n";
-            /* Iterrates among all strings in list.  Would like to be able to
-            change to work with all information. */
             foreach (string cat in category)
             {
-                // Creates a long string based on inputs with each item on a new line.
                 concstring += $"{cat}\n";
             }
             return concstring;
         }
 
+        /// <summary>
+        /// Iterrates on a list and returns all elements in one string.
+        /// </summary>
+        /// <param name="category">Itterates on a list of type TempTable.</param>
+        /// <returns>Returns a string with all elements from list.</returns>
         public string Listout(List<TempTable> category)
         {
             string concstring = "\n";
-            /* Iterrates among all strings in list.  Would like to be able to
-            change to work with all information. */
             foreach (TempTable cat in category)
             {
-                // Creates a long string based on inputs with each item on a new line.
                 concstring += $"{cat.Column2str}\n";
             }
             return concstring;
         }
 
-        public string Listout(List<P0AccessDatabase.Item> category)
+        /// <summary>
+        /// Iterrates on a list and returns all elements in one string.
+        /// </summary>
+        /// <param name="category">Takes a list of type Item to itterate on.</param>
+        /// <returns>Returns a string with all elements from list.</returns>
+        public string Listout(List<Item> category)
         {
             string concstring = "\n";
-            /* Iterrates among all strings in list.  Would like to be able to
-            change to work with all information. */
             int i = 1;
-            foreach (P0AccessDatabase.Item cat in category)
+            foreach (Item cat in category)
             {
-                // Creates a long string based on inputs with each item on a new line.
                 concstring += $"{i}. {cat.Item1}, ${cat.Price}, {cat.Descriptionforconsole}\n";
                 i++;
             }
             return concstring;
         }
 
-        public string Listouts(List<P0AccessDatabase.Store> storelist)
+        /// <summary>
+        /// Iterrates on a list and returns all elements in one string.
+        /// </summary>
+        /// <param name="storelist">Takes a list of type Store itterate on.</param>
+        /// <returns>Returns a string with all elements from list.</returns>
+        public string Listouts(List<Store> storelist)
         {
             string concstring = "\n";
-            /* Iterrates among all strings in list.  Would like to be able to
-            change to work with all information. */
             int i = 1;
-            foreach (P0AccessDatabase.Store cat in storelist)
+            foreach (Store cat in storelist)
             {
-                // Creates a long string based on inputs with each item on a new line.
                 concstring += $"{cat.Storeid}. {cat.Location}\n";
                 i++;
             }

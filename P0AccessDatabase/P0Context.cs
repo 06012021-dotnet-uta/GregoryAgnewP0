@@ -36,7 +36,7 @@ namespace P0AccessDatabase
             if (!optionsBuilder.IsConfigured)
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.\\ASUSHOMECLOUD;Database=P0;Trusted_Connection=Yes;");
+                optionsBuilder.UseSqlServer("Server=.\\ASUSHOMECLOUD;Database=P0;Trusted_Connection=True;");
             }
         }
 
@@ -107,13 +107,13 @@ namespace P0AccessDatabase
                     .WithMany(p => p.Cat23s)
                     .HasForeignKey(d => d.Cat2id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cat23__cat2id__7EF6D905");
+                    .HasConstraintName("FK__Cat23__cat2id__0D44F85C");
 
                 entity.HasOne(d => d.Cat3)
                     .WithMany(p => p.Cat23s)
                     .HasForeignKey(d => d.Cat3id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cat23__cat3id__7FEAFD3E");
+                    .HasConstraintName("FK__Cat23__cat3id__0E391C95");
             });
 
             modelBuilder.Entity<Cat3>(entity =>
@@ -231,36 +231,40 @@ namespace P0AccessDatabase
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.Orderid).HasColumnName("orderid");
+                entity.HasKey(e => new { e.Storeid, e.Itemid, e.Userid, e.Orderdate })
+                    .HasName("PKOrders");
+
+                entity.Property(e => e.Storeid).HasColumnName("storeid");
 
                 entity.Property(e => e.Itemid).HasColumnName("itemid");
+
+                entity.Property(e => e.Userid).HasColumnName("userid");
 
                 entity.Property(e => e.Orderdate)
                     .HasColumnType("datetime")
                     .HasColumnName("orderdate");
 
-                entity.Property(e => e.Storeid).HasColumnName("storeid");
+                entity.Property(e => e.Orderid).HasColumnName("orderid");
 
-                entity.Property(e => e.Total)
-                    .HasColumnType("decimal(20, 10)")
-                    .HasColumnName("total");
-
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.Itemid)
-                    .HasConstraintName("FK__Orders__itemid__5224328E");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Orders__itemid__18B6AB08");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.Storeid)
-                    .HasConstraintName("FK__Orders__storeid__51300E55");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Orders__storeid__17C286CF");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.Userid)
-                    .HasConstraintName("FK__Orders__userid__531856C7");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Orders__userid__19AACF41");
             });
 
             modelBuilder.Entity<Store>(entity =>
