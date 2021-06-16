@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "BloggingDatabase": "Server=(localdb)\\ASUSHOMECLOUD;Database=P0;Trusted_Connection=True;"
+  }
+}
