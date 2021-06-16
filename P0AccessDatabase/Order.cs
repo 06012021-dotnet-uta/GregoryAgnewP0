@@ -8,9 +8,9 @@ namespace P0AccessDatabase
     public partial class Order
     {
         public int Orderid { get; set; }
-        public int? Storeid { get; set; }
-        public int? Itemid { get; set; }
-        public int? Userid { get; set; }
+        public int Storeid { get; set; }
+        public int Itemid { get; set; }
+        public int Userid { get; set; }
         public int? Quantity { get; set; }
         public DateTime Orderdate { get; set; }
 

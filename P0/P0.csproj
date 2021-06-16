@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\domain library\P0DomainLibrary.csproj" />
     <ProjectReference Include="..\P0BusisnessLogic\P0BusisnessLogic.csproj" />
   </ItemGroup>
 

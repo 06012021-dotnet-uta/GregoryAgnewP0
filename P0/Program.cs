@@ -1,6 +1,6 @@
 ﻿using System;
 using P0BusisnessLogic;
-using P0AccessDatabase;
+using P0DomainLibrary;
 using System.Collections.Generic;
 
 namespace P0
@@ -10,8 +10,8 @@ namespace P0
         static void Main(string[] args)
         {
             Categories category = new();
-            Items item = new();
 
+            Items item = new();
 
             Storez store = new();
 
@@ -27,7 +27,7 @@ namespace P0
 
             CheckThings checkthing = new();
 
-            Insert insertname = new();
+            Insert insertstuff = new();
 
             Inventoryz inventor = new();
 
@@ -72,6 +72,12 @@ namespace P0
             int currentstore = 0;
 
             user.Choice = "";
+
+            bool valid12 = true;
+
+            ShowUsers showusers = new();
+
+            ShowOrders orderlist = new();
 
             Console.WriteLine($"Welcome to the {store.Name}!");
 
@@ -161,356 +167,420 @@ namespace P0
                     } while (badinput == true);
                     //Console.WriteLine("Re-enter your new password.");
                     bool didinsertwork;
-                    didinsertwork = insertname.InsertUser(user.Firstname, user.Lastname, user.Password);
+                    didinsertwork = insertstuff.InsertUser(user.Firstname, user.Lastname, user.Password);
                 }
                 
-                do { 
-                    Console.WriteLine("Select a store to purchase from by entering their line number.");
-
-                    Console.WriteLine($"\n0. Log Out{list.Listouts(store.ShowStores())}");
-                    user.Choice = Console.ReadLine();
-                    var storelist = store.ShowStores();
-                    if (Int32.TryParse(user.Choice, out int j) && j == 0)
-                    {
-                        valid = true;
-                        goto Restart;
-                    }
-                    else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= storelist.Count)
-                    {
-                        Console.WriteLine($"\nYou've chosen the store at {store.StoreChosen(j).Location}\n");
-                        currentstore = store.StoreChosen(j).Storeid;
-                        valid = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nThat was not an option.\n");
-                        valid = false;
-                    }
-                } while (valid == false) ;
-
-            Console.WriteLine("Select a category from the following to get started.");
-
                 do
                 {
-                    do
+                    Console.WriteLine("What would you like to do?  Type the line number of one of the following to get started.\n\n1. View order history.\n2. See all orders that a store has fulfilled.\n3. Search for customers by name.\n4. Go Shopping!\n");
+                    user.Choice = Console.ReadLine();
+                    if (Int32.TryParse(user.Choice, out int whatdo) && whatdo == 1)
                     {
-                        /* Calling the Listout method which prints a given list to console.
-                           BTW...this seems like super useful right?  Like this should be a system generic method right?
-                           This would print any variable type in the list just fine. */
-                        Console.WriteLine(list.Listout(category.Category1()));
+                        Console.WriteLine(orderlist.ShowAllOrders(user.Firstname, user.Lastname));
+                        valid12 = true;
+                        goto Whatdo;
+                    }
+                    else if (Int32.TryParse(user.Choice, out whatdo) && whatdo == 2)
+                    {
+                        
                         do
                         {
-                            // User input sent to all caps and with removed spaces.
-                            user.Choice = Console.ReadLine().Trim().ToUpper();
+                            Console.WriteLine("Choose a store by thier line number to see their order history.");
 
-                            int temp = category.Category2(user.Choice).Count;
-
-                            if (temp > 0)
+                            Console.WriteLine($"\n0. Log Out{list.Listouts(store.ShowStores())}");
+                            user.Choice = Console.ReadLine();
+                            var storelist = store.ShowStores();
+                            if (Int32.TryParse(user.Choice, out int j) && j == 0)
                             {
-                                storefirstchoice = user.Choice;
-                                Console.WriteLine($"{list.Listout(category.Category2(user.Choice))}" + "Previous\n");
                                 valid = true;
+                                goto Whatdo;
                             }
-                            else if (item.ShowItems(user.Choice).Count > 0)
+                            else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= storelist.Count)
                             {
-                                Console.WriteLine(list.Listout(item.ShowItems(user.Choice)));
+                                Console.WriteLine($"\nYou've chosen the store at {store.StoreChosen(j).Location}\n");
+                                currentstore = store.StoreChosen(j).Storeid;
+                                Console.WriteLine(orderlist.ShowStoreOrders(currentstore));
+                                valid = true;
                             }
                             else
                             {
-                                Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
-                                Console.WriteLine(list.Listout(category.Category1()));
+                                Console.WriteLine("\nThat was not an option.\n");
                                 valid = false;
                             }
-
                         } while (valid == false);
+                        
+                    }
+                    else if (Int32.TryParse(user.Choice, out whatdo) && whatdo == 3)
+                    {
+                        Console.WriteLine("Type in the first OR last name of someone to return all customers with matching first or last names that have accounts.");
+                        user.Choice = Console.ReadLine();
+                        Console.WriteLine(showusers.SearchAllUsers(user.Choice));
+                    }
+                    else if (Int32.TryParse(user.Choice, out whatdo) && whatdo == 4)
+                    {
+                        valid12 = true;
+
+                        do
+                        {
+                            Console.WriteLine("Select a store to purchase from by entering their line number.");
+
+                            Console.WriteLine($"\n0. Log Out{list.Listouts(store.ShowStores())}");
+                            user.Choice = Console.ReadLine();
+                            var storelist = store.ShowStores();
+                            if (Int32.TryParse(user.Choice, out int j) && j == 0)
+                            {
+                                valid = true;
+                                goto Restart;
+                            }
+                            else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= storelist.Count)
+                            {
+                                Console.WriteLine($"\nYou've chosen the store at {store.StoreChosen(j).Location}\n");
+                                currentstore = store.StoreChosen(j).Storeid;
+                                valid = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nThat was not an option.\n");
+                                valid = false;
+                            }
+                        } while (valid == false);
+
+                        Console.WriteLine("Select a category from the following to get started.");
+
                         do
                         {
                             do
                             {
-                                // User input sent to all caps and with removed spaces.
-                                // Second input.
-                                user.Choice = Console.ReadLine().Trim().ToUpper();
-
-                                int temp = category.Category3(user.Choice).Count;
-
-                                if (user.Choice == "PREVIOUS")
-                                {
-                                    Console.WriteLine($"{list.Listout(category.Category2(user.Choice))}" + "Previous\n");
-                                    repeat1 = true;
-                                    goto FirstLoop;
-                                }
-                                else if (temp > 0)
-                                {
-                                    storesecondchoice = user.Choice;
-                                    Console.WriteLine($"{list.Listout(category.Category3(user.Choice))}" + "Previous\n");
-                                    valid = true;
-                                    repeat1 = false;
-                                }
-                                else if (item.ShowItems(user.Choice).Count > 0)
-                                {
-                                    var itemlist = item.ShowItems(user.Choice);
-                                    do
-                                    {
-                                        Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
-
-                                        Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
-                                        user.Choice = Console.ReadLine();
-                                        if (Int32.TryParse(user.Choice, out int j) && j == 0)
-                                        {
-                                            Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
-                                            valid = true;
-                                            repeat2 = true;
-                                            goto SecondLoop;
-                                        }
-                                        else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
-                                        {
-                                            do
-                                            {
-                                                currentcart = 0;
-                                                cartlist = cart.Cartadd(itemlist, 0, j);
-                                                int itemid = item.ShowItemid(cartlist[0]);
-                                                if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
-                                                {
-                                                    tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
-                                                }
-                                                else
-                                                {
-                                                    tempint = inventor.ShowQuantity(itemid, currentstore);
-                                                }
-
-                                                Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
-
-                                                if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
-                                                {
-                                                    //add the thing to the cart
-                                                    cartlist.Clear();
-                                                    cartlist = cart.Cartadd(itemlist, x, j);
-                                                    Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
-                                                    Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
-                                                    if (Console.ReadLine().ToUpper() == "CHECK")
-                                                    {
-                                                        checkout = true;
-                                                        goto Checkout;
-                                                    }
-                                                    valid = true;
-                                                    repeat2 = false;
-
-                                                }
-                                                else
-                                                {
-                                                    valid = false;
-                                                    Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
-                                                }
-                                            } while (valid == false);
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("\nThat was not an option.\n");
-                                            valid = false;
-                                            repeat2 = false;
-                                        }
-                                    } while (valid == false);
-                                    goto SecondLoop;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
-                                    Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
-                                    valid = false;
-                                    repeat1 = false;
-                                }
-                            } while (valid == false);
-                            do
-                            {
+                                /* Calling the Listout method which prints a given list to console.
+                                   BTW...this seems like super useful right?  Like this should be a system generic method right?
+                                   This would print any variable type in the list just fine. */
+                                Console.WriteLine(list.Listout(category.Category1()));
                                 do
                                 {
-                                    //User input sent to all caps and with removed spaces.
-                                    //Third input.
+                                    // User input sent to all caps and with removed spaces.
                                     user.Choice = Console.ReadLine().Trim().ToUpper();
 
-                                    int temp = category.Category4(user.Choice).Count;
+                                    int temp = category.Category2(user.Choice).Count;
 
-                                    if (user.Choice == "PREVIOUS")
+                                    if (temp > 0)
                                     {
-                                        repeat2 = true;
-                                        Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
-                                        goto SecondLoop;
-                                    }
-                                    else if (temp > 0)
-                                    {
-                                        storethirdchoice = user.Choice;
-                                        Console.WriteLine($"{list.Listout(category.Category4(user.Choice))}" + "Previous\n");
+                                        storefirstchoice = user.Choice;
+                                        Console.WriteLine($"{list.Listout(category.Category2(user.Choice))}" + "Previous\n");
                                         valid = true;
-                                        repeat2 = false;
-                                        do
+                                    }
+                                    else if (item.ShowItems(user.Choice).Count > 0)
+                                    {
+                                        Console.WriteLine(list.Listout(item.ShowItems(user.Choice)));
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
+                                        Console.WriteLine(list.Listout(category.Category1()));
+                                        valid = false;
+                                    }
+
+                                } while (valid == false);
+                                do
+                                {
+                                    do
+                                    {
+                                        // User input sent to all caps and with removed spaces.
+                                        // Second input.
+                                        user.Choice = Console.ReadLine().Trim().ToUpper();
+
+                                        int temp = category.Category3(user.Choice).Count;
+
+                                        if (user.Choice == "PREVIOUS")
                                         {
+                                            Console.WriteLine($"{list.Listout(category.Category2(user.Choice))}" + "Previous\n");
+                                            repeat1 = true;
+                                            goto FirstLoop;
+                                        }
+                                        else if (temp > 0)
+                                        {
+                                            storesecondchoice = user.Choice;
+                                            Console.WriteLine($"{list.Listout(category.Category3(user.Choice))}" + "Previous\n");
+                                            valid = true;
+                                            repeat1 = false;
+                                        }
+                                        else if (item.ShowItems(user.Choice).Count > 0)
+                                        {
+                                            var itemlist = item.ShowItems(user.Choice);
                                             do
                                             {
-                                                //User input sent to all caps and with removed spaces.
-                                                //Forth input.
-                                                user.Choice = Console.ReadLine().Trim().ToUpper();
-                                                storefourthchoice = user.Choice;
+                                                Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
 
-                                                if (user.Choice == "PREVIOUS")
+                                                Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
+                                                user.Choice = Console.ReadLine();
+                                                if (Int32.TryParse(user.Choice, out int j) && j == 0)
                                                 {
-                                                    repeat3 = true;
-                                                    Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
-                                                    goto ThirdLoop;
+                                                    Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
+                                                    valid = true;
+                                                    repeat2 = true;
+                                                    goto SecondLoop;
                                                 }
-                                                else if (item.ShowItems(user.Choice).Count > 0)
+                                                else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
                                                 {
-                                                    var itemlist = item.ShowItems(user.Choice);
                                                     do
                                                     {
-                                                        Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
-
-                                                        Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
-                                                        user.Choice = Console.ReadLine();
-                                                        if (Int32.TryParse(user.Choice, out int j) && j == 0)
+                                                        currentcart = 0;
+                                                        tempint = 0;
+                                                        cartlist = cart.Cartadd(itemlist, 0, j);
+                                                        int itemid = item.ShowItemid(cartlist[0]);
+                                                        if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
                                                         {
-                                                            Console.WriteLine($"{list.Listout(category.Category4(storethirdchoice))}" + "Previous\n");
-                                                            valid = true;
-                                                            repeat4 = true;
-                                                            goto FourthLoop;
-                                                        }
-                                                        else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
-                                                        {
-                                                            do
-                                                            {
-                                                                currentcart = 0;
-                                                                cartlist = cart.Cartadd(itemlist, 0, j);
-                                                                int itemid = item.ShowItemid(cartlist[0]);
-                                                                if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
-                                                                {
-                                                                    tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
-                                                                }
-                                                                else
-                                                                {
-                                                                    tempint = inventor.ShowQuantity(itemid, currentstore);
-                                                                }
-                                                                Console.WriteLine("\nHow many of that would you like?\n");
-                                                                if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
-                                                                {
-                                                                    //add the thing to the cart
-                                                                    cartlist.Clear();
-                                                                    cartlist = cart.Cartadd(itemlist, x, j);
-                                                                    Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
-                                                                    Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
-                                                                    if (Console.ReadLine().ToUpper() == "CHECK")
-                                                                    {
-                                                                        checkout = true;
-                                                                        goto Checkout;
-                                                                    }
-                                                                    valid = true;
-                                                                    repeat4 = false;
-                                                                }
-                                                                else
-                                                                {
-                                                                    valid = false;
-                                                                    Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
-                                                                }
-                                                            } while (valid == false);
+                                                            tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
                                                         }
                                                         else
                                                         {
-                                                            Console.WriteLine("\nThat was not an option.\n");
+                                                            tempint = inventor.ShowQuantity(itemid, currentstore);
+                                                        }
+
+                                                        Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
+
+                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                        {
+                                                            //add the thing to the cart
+                                                            cartlist.Clear();
+                                                            cartlist = cart.Cartadd(itemlist, x, j);
+                                                            Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
+                                                            Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
+                                                            if (Console.ReadLine().ToUpper() == "CHECK")
+                                                            {
+                                                                checkout = true;
+                                                                goto Checkout;
+                                                            }
+                                                            valid = true;
+                                                            repeat2 = false;
+
+                                                        }
+                                                        else
+                                                        {
                                                             valid = false;
-                                                            repeat4 = false;
+                                                            Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
                                                         }
                                                     } while (valid == false);
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
-                                                    Console.WriteLine($"{list.Listout(category.Category4(storethirdchoice))}" + "Previous\n");
+                                                    Console.WriteLine("\nThat was not an option.\n");
                                                     valid = false;
-                                                    repeat3 = false;
+                                                    repeat2 = false;
                                                 }
                                             } while (valid == false);
-                                        FourthLoop:;
-                                        } while (repeat4 == true);
-                                    }
-                                    else if (item.ShowItems(user.Choice).Count > 0)
+                                            goto SecondLoop;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
+                                            Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
+                                            valid = false;
+                                            repeat1 = false;
+                                        }
+                                    } while (valid == false);
+                                    do
                                     {
-                                        var itemlist = item.ShowItems(user.Choice);
                                         do
                                         {
-                                            Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
+                                            //User input sent to all caps and with removed spaces.
+                                            //Third input.
+                                            user.Choice = Console.ReadLine().Trim().ToUpper();
 
-                                            Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
-                                            user.Choice = Console.ReadLine();
-                                            if (Int32.TryParse(user.Choice, out int j) && j == 0)
+                                            int temp = category.Category4(user.Choice).Count;
+
+                                            if (user.Choice == "PREVIOUS")
                                             {
-                                                Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
-                                                valid = true;
-                                                repeat3 = true;
-                                                goto ThirdLoop;
+                                                repeat2 = true;
+                                                Console.WriteLine($"{list.Listout(category.Category2(storefirstchoice))}" + "Previous\n");
+                                                goto SecondLoop;
                                             }
-                                            else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
+                                            else if (temp > 0)
                                             {
+                                                storethirdchoice = user.Choice;
+                                                Console.WriteLine($"{list.Listout(category.Category4(user.Choice))}" + "Previous\n");
+                                                valid = true;
+                                                repeat2 = false;
                                                 do
                                                 {
-                                                    currentcart = 0;
-                                                    cartlist = cart.Cartadd(itemlist, 0, j);
-                                                    int itemid = item.ShowItemid(cartlist[0]);
-                                                    if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
+                                                    do
                                                     {
-                                                        tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
-                                                    }
-                                                    else
-                                                    {
-                                                        tempint = inventor.ShowQuantity(itemid, currentstore);
-                                                    }
-                                                    Console.WriteLine("\nHow many of that would you like?\n");
-                                                    if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
-                                                    {
-                                                        //add the thing to the cart
-                                                        cartlist.Clear();
-                                                        cartlist = cart.Cartadd(itemlist, x, j);
-                                                        Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
-                                                        Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
-                                                        if(Console.ReadLine().ToUpper()=="CHECK")
+                                                        //User input sent to all caps and with removed spaces.
+                                                        //Forth input.
+                                                        user.Choice = Console.ReadLine().Trim().ToUpper();
+                                                        storefourthchoice = user.Choice;
+
+                                                        if (user.Choice == "PREVIOUS")
                                                         {
-                                                            checkout = true;
-                                                            goto Checkout;
+                                                            repeat3 = true;
+                                                            Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
+                                                            goto ThirdLoop;
                                                         }
+                                                        else if (item.ShowItems(user.Choice).Count > 0)
+                                                        {
+                                                            var itemlist = item.ShowItems(user.Choice);
+                                                            do
+                                                            {
+                                                                Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
+
+                                                                Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
+                                                                user.Choice = Console.ReadLine();
+                                                                if (Int32.TryParse(user.Choice, out int j) && j == 0)
+                                                                {
+                                                                    Console.WriteLine($"{list.Listout(category.Category4(storethirdchoice))}" + "Previous\n");
+                                                                    valid = true;
+                                                                    repeat4 = true;
+                                                                    goto FourthLoop;
+                                                                }
+                                                                else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
+                                                                {
+                                                                    do
+                                                                    {
+                                                                        currentcart = 0;
+                                                                        tempint = 0;
+                                                                        cartlist = cart.Cartadd(itemlist, 0, j);
+                                                                        int itemid = item.ShowItemid(cartlist[0]);
+                                                                        if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
+                                                                        {
+                                                                            tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            tempint = inventor.ShowQuantity(itemid, currentstore);
+                                                                        }
+                                                                        Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
+                                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                                        {
+                                                                            //add the thing to the cart
+                                                                            cartlist.Clear();
+                                                                            cartlist = cart.Cartadd(itemlist, x, j);
+                                                                            Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
+                                                                            Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
+                                                                            if (Console.ReadLine().ToUpper() == "CHECK")
+                                                                            {
+                                                                                checkout = true;
+                                                                                goto Checkout;
+                                                                            }
+                                                                            valid = true;
+                                                                            repeat4 = false;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            valid = false;
+                                                                            Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
+                                                                        }
+                                                                    } while (valid == false);
+                                                                }
+                                                                else
+                                                                {
+                                                                    Console.WriteLine("\nThat was not an option.\n");
+                                                                    valid = false;
+                                                                    repeat4 = false;
+                                                                }
+                                                            } while (valid == false);
+                                                        }
+                                                        else
+                                                        {
+                                                            Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
+                                                            Console.WriteLine($"{list.Listout(category.Category4(storethirdchoice))}" + "Previous\n");
+                                                            valid = false;
+                                                            repeat3 = false;
+                                                        }
+                                                    } while (valid == false);
+                                                FourthLoop:;
+                                                } while (repeat4 == true);
+                                            }
+                                            else if (item.ShowItems(user.Choice).Count > 0)
+                                            {
+                                                var itemlist = item.ShowItems(user.Choice);
+                                                do
+                                                {
+                                                    Console.WriteLine("\nChoose which of the following you'd like to add to your cart by typing their line number below.\n");
+
+                                                    Console.WriteLine($"\n0. Previous{list.Listout(itemlist)}\n");
+                                                    user.Choice = Console.ReadLine();
+                                                    if (Int32.TryParse(user.Choice, out int j) && j == 0)
+                                                    {
+                                                        Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
                                                         valid = true;
-                                                        repeat3 = false;
+                                                        repeat3 = true;
+                                                        goto ThirdLoop;
+                                                    }
+                                                    else if (Int32.TryParse(user.Choice, out j) && j > 0 && j <= itemlist.Count)
+                                                    {
+                                                        do
+                                                        {
+                                                            currentcart = 0;
+                                                            cartlist = cart.Cartadd(itemlist, 0, j);
+                                                            int itemid = item.ShowItemid(cartlist[0]);
+                                                            if (cart.Cartstuff.TryGetValue(cartlist[0], out currentcart))
+                                                            {
+                                                                tempint = inventor.ShowQuantity(itemid, currentstore) - currentcart;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempint = inventor.ShowQuantity(itemid, currentstore);
+                                                            }
+                                                            Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
+                                                            if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                            {
+                                                                //add the thing to the cart
+                                                                cartlist.Clear();
+                                                                cartlist = cart.Cartadd(itemlist, x, j);
+                                                                Console.WriteLine($"\nYou've added {x} {cartlist[0]}(s) to your cart.\n  Your current cart costs a total of {cartlist[1]}.\n");
+                                                                Console.WriteLine("Type CHECK to checkout now or anything else to keep shopping.");
+                                                                if (Console.ReadLine().ToUpper() == "CHECK")
+                                                                {
+                                                                    checkout = true;
+                                                                    goto Checkout;
+                                                                }
+                                                                valid = true;
+                                                                repeat3 = false;
+                                                            }
+                                                            else
+                                                            {
+                                                                valid = false;
+                                                                Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
+                                                            }
+                                                        } while (valid == false);
                                                     }
                                                     else
                                                     {
+                                                        Console.WriteLine("\nThat was not an option.\n");
                                                         valid = false;
-                                                        Console.WriteLine("\nThat was not a quantity between 0 and max, please try again.\n");
+                                                        repeat4 = false;
                                                     }
                                                 } while (valid == false);
                                             }
                                             else
                                             {
-                                                Console.WriteLine("\nThat was not an option.\n");
+                                                Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
+                                                Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
                                                 valid = false;
-                                                repeat4 = false;
+                                                repeat2 = false;
                                             }
                                         } while (valid == false);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("\nThat was not a valid choice.\nPlease select from the following by typing them below.\n");
-                                        Console.WriteLine($"{list.Listout(category.Category3(storesecondchoice))}" + "Previous\n");
-                                        valid = false;
-                                        repeat2 = false;
-                                    }
-                                } while (valid == false);
-                            ThirdLoop:;
-                            } while (repeat3 == true);
-                        SecondLoop:;
-                        } while (repeat2 == true);
-                    FirstLoop:;
-                    } while (repeat1 == true);
-                Checkout:;
-                } while (checkout == false);
-                //update inventory
-                Console.WriteLine($"\n{ cart.FinalCart(cart.Cartstuff, cartlist[1], currentstore, user.Firstname, user.Lastname)}");
-                Console.WriteLine("\nHave a good day!\n\n");
+                                    ThirdLoop:;
+                                    } while (repeat3 == true);
+                                SecondLoop:;
+                                } while (repeat2 == true);
+                            FirstLoop:;
+                            } while (repeat1 == true);
+                        Checkout:;
+                        } while (checkout == false);
+                        //update inventory
+                        insertstuff.InsertOrder(cart.Cartstuff, currentstore, user.Firstname, user.Lastname);
+                        insertstuff.AdjustInventory(cart.Cartstuff, currentstore);
+                        insertstuff.Savechangez();
+                        Console.WriteLine($"\n{ cart.FinalCart(cart.Cartstuff, cartlist[1], currentstore, user.Firstname, user.Lastname)}");
+                        Console.WriteLine("\nHave a good day!\n\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("That was not a valid option.");
+                        valid12 = false;
+                    }
+                Whatdo:;
+                } while (valid12 == false);
             Restart:;
             }
         }

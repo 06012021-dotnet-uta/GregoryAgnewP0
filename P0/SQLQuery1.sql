@@ -26,8 +26,8 @@ CREATE TABLE Keywords(keyword nvarchar(100) NOT NULL, itemid int FOREIGN KEY REF
 
 CREATE TABLE Inventory(storeid int FOREIGN KEY REFERENCES Store(storeid), itemid int FOREIGN KEY REFERENCES Item(itemid), quantity int, CONSTRAINT PKInventory PRIMARY KEY CLUSTERED (storeid, itemid));
 
-CREATE TABLE Orders(orderid int IDENTITY(1,1) NOT NULL PRIMARY KEY, storeid int FOREIGN KEY REFERENCES Store(storeid), itemid int FOREIGN KEY REFERENCES Item(itemid), userid int FOREIGN KEY REFERENCES Users(userid),
-total decimal (20,10), orderdate datetime NOT NULL);
+CREATE TABLE Orders(orderid int, storeid int FOREIGN KEY REFERENCES Store(storeid), itemid int FOREIGN KEY REFERENCES Item(itemid), userid int FOREIGN KEY REFERENCES Users(userid),
+total decimal (20,10), orderdate datetime NOT NULL, CONSTRAINT PKInventory PRIMARY KEY CLUSTERED (storeid, itemid, userid, orderdate));
 
 -- Insert Seed Info.
 

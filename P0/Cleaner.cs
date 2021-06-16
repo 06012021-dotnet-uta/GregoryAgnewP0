@@ -6,9 +6,16 @@ using System.Text.RegularExpressions;
    thanks to Winston for the link! */
 namespace P0
 {
-
-    public class Sanitizer
+    /// <summary>
+    /// Holds the method to sanitize user inputs going to the database.
+    /// </summary>
+    public class Sanitizer : ISanitizer
     {
+        /// <summary>
+        /// Sanitizes input being sent to database.
+        /// </summary>
+        /// <param name="strIn">Takes a user input as a string.</param>
+        /// <returns>Returns sanitized string.</returns>
         public string CleanInput(string strIn)
         {
             // Replace invalid characters with empty strings.
