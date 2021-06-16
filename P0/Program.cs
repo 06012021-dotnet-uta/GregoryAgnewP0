@@ -338,7 +338,7 @@ namespace P0
 
                                                         Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
 
-                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x >= 0 && x <= tempint)
                                                         {
                                                             //add the thing to the cart
                                                             cartlist.Clear();
@@ -448,7 +448,7 @@ namespace P0
                                                                             tempint = inventor.ShowQuantity(itemid, currentstore);
                                                                         }
                                                                         Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
-                                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                                        if (Int32.TryParse(Console.ReadLine(), out int x) && x >= 0 && x <= tempint)
                                                                         {
                                                                             //add the thing to the cart
                                                                             cartlist.Clear();
@@ -521,7 +521,7 @@ namespace P0
                                                                 tempint = inventor.ShowQuantity(itemid, currentstore);
                                                             }
                                                             Console.WriteLine($"\nHow many of that would you like? (max {tempint})\n");
-                                                            if (Int32.TryParse(Console.ReadLine(), out int x) && x > 0 && x < tempint)
+                                                            if (Int32.TryParse(Console.ReadLine(), out int x) && x >= 0 && x <= tempint)
                                                             {
                                                                 //add the thing to the cart
                                                                 cartlist.Clear();
@@ -568,8 +568,13 @@ namespace P0
                         Checkout:;
                         } while (checkout == false);
                         //update inventory
+                        bool fail = insertstuff.AdjustInventory(cart.Cartstuff, currentstore);
+                        if (fail == true)
+                        {
+                            Console.WriteLine("We're low on some of those items.  Try buying less or other things.");
+                            goto Restart;
+                        }
                         insertstuff.InsertOrder(cart.Cartstuff, currentstore, user.Firstname, user.Lastname);
-                        insertstuff.AdjustInventory(cart.Cartstuff, currentstore);
                         insertstuff.Savechangez();
                         Console.WriteLine($"\n{ cart.FinalCart(cart.Cartstuff, cartlist[1], currentstore, user.Firstname, user.Lastname)}");
                         Console.WriteLine("\nHave a good day!\n\n");

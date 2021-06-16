@@ -55,11 +55,9 @@ namespace P0BusisnessLogic
             if (context.Orders.Select(x => x.Orderid).Count() > 0)
             {
                 order.Orderid = context.Orders.Select(x => x.Orderid).Max() + 1;
-                Console.WriteLine("test1");
             }
             else
             {
-                Console.WriteLine("test2");
                 order.Orderid = 1;
             }
             foreach (KeyValuePair<string, int> pair in endcart)
@@ -83,18 +81,29 @@ namespace P0BusisnessLogic
         /// </summary>
         /// <param name="endcart">Takes the dictionary made by the cart with the items purchased and their quantities in the cart.</param>
         /// <param name="currentstore">Takes the currernt store's id as an int.</param>
-        public void AdjustInventory(Dictionary<string, int> endcart, int currentstore)
+        public bool AdjustInventory(Dictionary<string, int> endcart, int currentstore)
         {
+            bool fail = false;
             foreach (KeyValuePair<string, int> pair in endcart)
             {
                 if (pair.Key != "")
                 {
                     int thisItemid = context.Items.Where(x => x.Descriptionforconsole == pair.Key).Select(x => x.Itemid).FirstOrDefault();
                     var onlythis = context.Inventories.Where(x => (x.Itemid == thisItemid) && (x.Storeid == currentstore)).FirstOrDefault();
-                    onlythis.Quantity -= pair.Value;
+                    var lowamount = context.Inventories.Where(x => (x.Itemid == thisItemid) && (x.Storeid == currentstore)).Select(x=>x.Quantity).FirstOrDefault();
+                    if (lowamount < pair.Value)
+                    {
+                        fail = true;
+                    }
+                    else
+                    { 
+                        onlythis.Quantity -= pair.Value;
+                        fail = false;
+                    }
                 }
             }
             //error handeling?
+            return fail;
         }
         public void Savechangez()
         {

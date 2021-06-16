@@ -7,7 +7,7 @@ namespace P0BusisnessLogic
     /// </summary>
     public interface IInsert
     {
-        void AdjustInventory(Dictionary<string, int> endcart, int currentstore);
+        bool AdjustInventory(Dictionary<string, int> endcart, int currentstore);
         void InsertOrder(Dictionary<string, int> endcart, int currentstore, string userfirstname, string userlastname);
         bool InsertUser(string firstname, string lastname, string password);
         void Savechangez();
